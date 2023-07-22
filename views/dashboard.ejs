@@ -1,0 +1,96 @@
+<!-- dashboard.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenreWrapped Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">GenreWrapped Dashboard</h3>
+                        <!-- You can use EJS tags to dynamically display user data -->
+                        <p class="card-text text-center">Welcome, <%= user.display_name %>!</p>
+                        <p class="card-text text-center">Your Spotify ID: <%= user.id %>
+                        </p>
+                        <!-- Add more data displays here as needed -->
+
+                        <!-- Top Tracks Column -->
+                        <div class="col-md-6">
+                            <h4>Top 10 Tracks</h4>
+                            <div class="timeframe-selection">
+                                <label for="track-timeframe">Select Timeframe:</label>
+                                <select id="track-timeframe">
+                                    <option value="short_term">Last 4 weeks</option>
+                                    <option value="medium_term">Last 6 months</option>
+                                    <option value="long_term">Entire history</option>
+                                </select>
+                            </div>
+                            <!-- Display top tracks here -->
+                            <ul>
+                                <% topTracks.forEach((track)=> { %>
+                                    <li>
+                                        <%= track.name %> - <%= track.artists[0].name %>
+                                    </li>
+                                    <% }); %>
+                            </ul>
+                        </div>
+
+                        <!-- Top Artists Column -->
+                        <div class="col-md-6">
+                            <h4>Top 10 Artists</h4>
+                            <div class="timeframe-selection">
+                                <label for="artist-timeframe">Select Timeframe:</label>
+                                <select id="artist-timeframe">
+                                    <option value="short_term">Last 4 weeks</option>
+                                    <option value="medium_term">Last 6 months</option>
+                                    <option value="long_term">Entire history</option>
+                                </select>
+                            </div>
+                            <!-- Display top artists here -->
+                            <ul>
+                                <% topArtists.forEach((artist)=> { %>
+                                    <li>
+                                        <%= artist.name %>
+                                    </li>
+                                    <% }); %>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Function to update the URL and trigger a page reload with the selected timeframes
+        function updateDashboard(timeframeType, timeframeValue) {
+            const url = new URL(window.location.href);
+            url.searchParams.set(timeframeType, timeframeValue);
+            window.location.href = url.toString();
+        }
+
+        // Event listeners for timeframe selection
+        document.getElementById('track-timeframe').addEventListener('change', function () {
+            updateDashboard('track_timeframe', this.value);
+        });
+
+        document.getElementById('artist-timeframe').addEventListener('change', function () {
+            updateDashboard('artist_timeframe', this.value);
+        });
+    </script>
+</body>
+
+</html>
