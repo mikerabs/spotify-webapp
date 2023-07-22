@@ -55,19 +55,22 @@ app.get('/dashboard', async (req, res) => {
     try {
         // Use the access token to make requests to the Spotify API on behalf of the user
         const user = await spotifyApi.getMe();
-        
+
         // Log the user object to the console for debugging
         console.log('User:', user);
-        
+
         // Get the selected timeframes from the query parameters (default to 'short_term')
-        const trackTimeframe = req.query.track_timeframe || 'short_term';
-        const artistTimeframe = req.query.artist_timeframe || 'short_term';
+        const trackTimeframe = req.query['track-timeframe'] || 'short_term';
+        const artistTimeframe = req.query['artist-timeframe'] || 'short_term';
+
+
+        //log each trackTimeframe and artistTimeframe to the console for debugging
+        console.log('trackTimeframe:', trackTimeframe);
+        console.log('artistTimeframe:', artistTimeframe);
 
         // Use the access token to make requests to the Spotify API on behalf of the user
         const topTracks = await spotifyApi.getMyTopTracks({ limit: 10, time_range: trackTimeframe });
         const topArtists = await spotifyApi.getMyTopArtists({ limit: 10, time_range: artistTimeframe });
-
-        
 
         // Render the dashboard page and pass the user data and top tracks/artists to it
         res.render('dashboard', {

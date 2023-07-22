@@ -29,9 +29,9 @@
                             <div class="timeframe-selection">
                                 <label for="track-timeframe">Select Timeframe:</label>
                                 <select id="track-timeframe">
-                                    <option value="short_term">Last 4 weeks</option>
-                                    <option value="medium_term">Last 6 months</option>
-                                    <option value="long_term">Entire history</option>
+                                    <option value="short_term" <% if (trackTimeframe === 'short_term') { %> selected <% } %>>Last 4 weeks</option>
+                                    <option value="medium_term" <% if (trackTimeframe === 'medium_term') { %> selected <% } %>>Last 6 months</option>
+                                    <option value="long_term" <% if (trackTimeframe === 'long_term') { %> selected <% } %>>Entire history</option>
                                 </select>
                             </div>
                             <!-- Display top tracks here -->
@@ -50,9 +50,9 @@
                             <div class="timeframe-selection">
                                 <label for="artist-timeframe">Select Timeframe:</label>
                                 <select id="artist-timeframe">
-                                    <option value="short_term">Last 4 weeks</option>
-                                    <option value="medium_term">Last 6 months</option>
-                                    <option value="long_term">Entire history</option>
+                                    <option value="short_term" <% if (artistTimeframe === 'short_term') { %> selected <% } %>>Last 4 weeks</option>
+                                    <option value="medium_term" <% if (artistTimeframe === 'medium_term') { %> selected <% } %>>Last 6 months</option>
+                                    <option value="long_term" <% if (artistTimeframe === 'long_term') { %> selected <% } %>>Entire history</option>
                                 </select>
                             </div>
                             <!-- Display top artists here -->
@@ -64,6 +64,7 @@
                                     <% }); %>
                             </ul>
                         </div>
+
 
                     </div>
                 </div>
@@ -79,18 +80,37 @@
         function updateDashboard(timeframeType, timeframeValue) {
             const url = new URL(window.location.href);
             url.searchParams.set(timeframeType, timeframeValue);
+            console.log('Updated URL:', url.toString());
             window.location.href = url.toString();
+        }
+
+        // Function to set the selected option in the dropdown based on the URL query parameters
+        function setSelectedOption(selectId, defaultValue) {
+            const url = new URL(window.location.href);
+            const selectedValue = url.searchParams.get(selectId);
+            console.log('Selected Value:', selectedValue); // Add this line for debugging
+            const selectElement = document.getElementById(selectId);
+            selectElement.value = selectedValue || defaultValue;
         }
 
         // Event listeners for timeframe selection
         document.getElementById('track-timeframe').addEventListener('change', function () {
-            updateDashboard('track_timeframe', this.value);
+            console.log('Track timeframe selected:', this.value);
+            updateDashboard('track-timeframe', this.value);
         });
 
         document.getElementById('artist-timeframe').addEventListener('change', function () {
-            updateDashboard('artist_timeframe', this.value);
+            console.log('Artist timeframe selected:', this.value);
+            updateDashboard('artist-timeframe', this.value);
+        });
+
+        // Set the selected options for the dropdowns on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            setSelectedOption('track-timeframe', 'short_term');
+            setSelectedOption('artist-timeframe', 'short_term');
         });
     </script>
+
 </body>
 
 </html>
