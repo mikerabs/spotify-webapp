@@ -1,0 +1,15 @@
+/* styles.css */
+
+/* Style for the album covers */
+.track-img {
+    max-width: 50px; /* Adjust this value as needed */
+    max-height: 50px; /* Adjust this value as needed */
+    margin-right: 10px; /* Add some space between the image and text */
+}
+
+/* Style for the artist images */
+.artist-img {
+    max-width: 50px; /* Adjust this value as needed */
+    max-height: 50px; /* Adjust this value as needed */
+    margin-right: 10px; /* Add some space between the image and text */
+}

@@ -6,9 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GenreWrapped Dashboard</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="/styles.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
+
 
 <body>
     <div class="container mt-5">
@@ -23,54 +26,109 @@
                         </p>
                         <!-- Add more data displays here as needed -->
 
-                        <!-- Top Tracks Column -->
-                        <div class="col-md-6">
-                            <h4>Top 10 Tracks</h4>
-                            <div class="timeframe-selection">
-                                <label for="track-timeframe">Select Timeframe:</label>
-                                <select id="track-timeframe">
-                                    <option value="short_term" <% if (trackTimeframe === 'short_term') { %> selected <% } %>>Last 4 weeks</option>
-                                    <option value="medium_term" <% if (trackTimeframe === 'medium_term') { %> selected <% } %>>Last 6 months</option>
-                                    <option value="long_term" <% if (trackTimeframe === 'long_term') { %> selected <% } %>>Entire history</option>
-                                </select>
+                        <!-- Two-column layout for top tracks and top artists -->
+                        <div class="row">
+                            <!-- Top Tracks Column -->
+                            <div class="col-md-6">
+                                <h4>Top 10 Tracks</h4>
+                                <div class="timeframe-selection">
+                                    <label for="track-timeframe">Select Timeframe:</label>
+                                    <select id="track-timeframe">
+                                        <option value="short_term" <% if (trackTimeframe==='short_term' ) { %> selected
+                                            <% } %>>Last 4 weeks
+                                        </option>
+                                        <option value="medium_term" <% if (trackTimeframe==='medium_term' ) { %>
+                                            selected <% } %>>Last 6 months</option>
+                                        <option value="long_term" <% if (trackTimeframe==='long_term' ) { %> selected <%
+                                                } %>>Entire history</option>
+                                    </select>
+                                </div>
+                                <!-- Display top tracks here -->
+                                <ul>
+                                    <% topTracks.forEach((track)=> { %>
+                                        <li>
+                                            <img src="<%= track.album.images[0].url %>" alt="<%= track.album.name %>"
+                                                class="track-img">
+                                            <%= track.name %> - <%= track.artists[0].name %>
+                                        </li>
+                                        <% }); %>
+                                </ul>
                             </div>
-                            <!-- Display top tracks here -->
-                            <ul>
-                                <% topTracks.forEach((track)=> { %>
-                                    <li>
-                                        <%= track.name %> - <%= track.artists[0].name %>
-                                    </li>
-                                    <% }); %>
-                            </ul>
-                        </div>
 
-                        <!-- Top Artists Column -->
-                        <div class="col-md-6">
-                            <h4>Top 10 Artists</h4>
-                            <div class="timeframe-selection">
-                                <label for="artist-timeframe">Select Timeframe:</label>
-                                <select id="artist-timeframe">
-                                    <option value="short_term" <% if (artistTimeframe === 'short_term') { %> selected <% } %>>Last 4 weeks</option>
-                                    <option value="medium_term" <% if (artistTimeframe === 'medium_term') { %> selected <% } %>>Last 6 months</option>
-                                    <option value="long_term" <% if (artistTimeframe === 'long_term') { %> selected <% } %>>Entire history</option>
-                                </select>
+                            <!-- Top Artists Column -->
+                            <div class="col-md-6">
+                                <h4>Top 10 Artists</h4>
+                                <div class="timeframe-selection">
+                                    <label for="artist-timeframe">Select Timeframe:</label>
+                                    <select id="artist-timeframe">
+                                        <option value="short_term" <% if (artistTimeframe==='short_term' ) { %> selected
+                                            <% } %>>Last 4 weeks
+                                        </option>
+                                        <option value="medium_term" <% if (artistTimeframe==='medium_term' ) { %>
+                                            selected
+                                            <% } %>>Last 6 months
+                                        </option>
+                                        <option value="long_term" <% if (artistTimeframe==='long_term' ) { %> selected
+                                            <% } %>>Entire history
+                                        </option>
+                                    </select>
+                                </div>
+                                <!-- Display top artists here -->
+                                <ul>
+                                    <% topArtists.forEach((artist)=> { %>
+                                        <li>
+                                            <img src="<%= artist.images[0].url %>" alt="<%= artist.name %>"
+                                                class="artist-img">
+                                            <%= artist.name %>
+                                        </li>
+                                        <% }); %>
+                                </ul>
                             </div>
-                            <!-- Display top artists here -->
-                            <ul>
-                                <% topArtists.forEach((artist)=> { %>
-                                    <li>
-                                        <%= artist.name %>
-                                    </li>
-                                    <% }); %>
-                            </ul>
-                        </div>
 
+                            <!-- Search Section -->
+                            <div class="col-md-12">
+                                <h4>Search</h4>
+                                <div class="search-container">
+                                    <input type="text" id="search-term" placeholder="Enter your search term">
+                                    <select id="search-type">
+                                        <option value="track">Track</option>
+                                        <option value="artist">Artist</option>
+                                        <option value="album">Album</option>
+                                        <option value="playlist">Playlist</option>
+                                        <option value="show">Show</option>
+                                        <option value="episode">Episode</option>
+                                        <option value="audiobook">Audiobook</option>
+                                    </select>
+                                    <button id="search-button">Search</button>
+                                </div>
+                                <div id="search-results">
+                                    <!-- Display search results here -->
+                                </div>
+                                <!-- Detailed information section -->
+                                <div id="detailed-info" style="display: none;">
+                                    <!-- Placeholder for the album/artist image -->
+                                    <img id="detail-image" src="" alt="Album/Artist Image">
+
+                                    <!-- Placeholder for the Spotify ID -->
+                                    <p id="detail-spotify-id">Spotify ID: </p>
+
+                                    <!-- Placeholder for the genre -->
+                                    <p id="detail-genre">Genre: </p>
+
+                                    <!-- Add more placeholders for other relevant information -->
+                                </div>
+
+                            </div>
+
+
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -110,7 +168,9 @@
             setSelectedOption('artist-timeframe', 'short_term');
         });
     </script>
-
+   
+    <!-- Search script -->
+    <script src="/search.js"></script>
 </body>
 
 </html>

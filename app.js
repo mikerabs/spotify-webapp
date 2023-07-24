@@ -14,6 +14,18 @@ const spotifyApi = new SpotifyWebApi({
     redirectUri: 'http://localhost:3000/callback'
 });
 
+// app.js
+
+// ...
+const path = require('path');
+// ...
+
+// Set the 'public' folder as the static directory
+app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files from the "public" directory, including search.js
+app.use(express.static('public'));
+
+
 // Home page route
 app.get('/', (req, res) => {
     res.render('index'); // Render the index.html file
@@ -72,6 +84,26 @@ app.get('/dashboard', async (req, res) => {
         const topTracks = await spotifyApi.getMyTopTracks({ limit: 10, time_range: trackTimeframe });
         const topArtists = await spotifyApi.getMyTopArtists({ limit: 10, time_range: artistTimeframe });
 
+        // Create arrays to store track album covers and artist images
+        const trackAlbumCovers = [];
+        const artistImages = [];
+
+        // Fetch album covers for top tracks
+        for (const track of topTracks.body.items) {
+            // Fetch the track details to get the album cover
+            const trackDetails = await spotifyApi.getTrack(track.id);
+            const albumCover = trackDetails.body.album.images[0].url;
+            trackAlbumCovers.push(albumCover);
+        }
+
+        // Fetch images for top artists
+        for (const artist of topArtists.body.items) {
+            // Fetch the artist details to get the image
+            const artistDetails = await spotifyApi.getArtist(artist.id);
+            const artistImage = artistDetails.body.images[0].url;
+            artistImages.push(artistImage);
+        }
+
         // Render the dashboard page and pass the user data and top tracks/artists to it
         res.render('dashboard', {
             user: user.body,
@@ -79,6 +111,8 @@ app.get('/dashboard', async (req, res) => {
             topArtists: topArtists.body.items,
             trackTimeframe,
             artistTimeframe,
+            trackAlbumCovers,
+            artistImages,
         });
     } catch (error) {
         console.error('Error fetching user data from Spotify:', error.message);
@@ -86,6 +120,20 @@ app.get('/dashboard', async (req, res) => {
     }
 });
 
+// Search route
+app.get('/search', async (req, res) => {
+    const query = req.query.q;
+    const type = req.query.type;
+    
+    try {
+        // Use the spotifyApi object to search based on the selected type
+        const data = await spotifyApi.search(query, [type]);
+        res.json(data.body);
+    } catch (error) {
+        console.error('Error searching:', error.message);
+        res.status(500).json({ error: 'Error searching' });
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
