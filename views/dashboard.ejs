@@ -6,10 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GenreWrapped Dashboard</title>
+
+
     <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="/styles.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
 </head>
 
 
@@ -89,50 +94,38 @@
                             <div class="col-md-12">
                                 <h4>Search</h4>
                                 <div class="search-container">
-                                    <input type="text" id="search-term" placeholder="Enter your search term">
-                                    <select id="search-type">
-                                        <option value="track">Track</option>
-                                        <option value="artist">Artist</option>
-                                        <option value="album">Album</option>
-                                        <option value="playlist">Playlist</option>
-                                        <option value="show">Show</option>
-                                        <option value="episode">Episode</option>
-                                        <option value="audiobook">Audiobook</option>
-                                    </select>
-                                    <button id="search-button">Search</button>
+                                    <select class="form-control" id="search-bar"></select>
                                 </div>
-                                <div id="search-results">
-                                    <!-- Display search results here -->
-                                </div>
-                                <!-- Detailed information section -->
-                                <div id="detailed-info" style="display: none;">
-                                    <!-- Placeholder for the album/artist image -->
-                                    <img id="detail-image" src="" alt="Album/Artist Image">
-
-                                    <!-- Placeholder for the Spotify ID -->
-                                    <p id="detail-spotify-id">Spotify ID: </p>
-
-                                    <!-- Placeholder for the genre -->
-                                    <p id="detail-genre">Genre: </p>
-
-                                    <!-- Add more placeholders for other relevant information -->
-                                </div>
-
+                                <select id="search-type">
+                                    <option value="track">Track</option>
+                                    <option value="artist">Artist</option>
+                                    <option value="album">Album</option>
+                                    <option value="playlist">Playlist</option>
+                                    <option value="show">Show</option>
+                                    <option value="episode">Episode</option>
+                                    <option value="audiobook">Audiobook</option>
+                                </select>
+                                <button id="search-button">Search</button>
                             </div>
-
-
+                            <div id="detailed-info" style="display: none;">
+                                <p id="detail-name">Name: </p>
+                                <p id="detail-spotify-id">Spotify ID: </p>
+                            </div>
                         </div>
 
+
                     </div>
+
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- Script for top 10 -->
     <script>
         // Function to update the URL and trigger a page reload with the selected timeframes
         function updateDashboard(timeframeType, timeframeValue) {
@@ -168,9 +161,12 @@
             setSelectedOption('artist-timeframe', 'short_term');
         });
     </script>
-   
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Search script -->
     <script src="/search.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 </body>
 
 </html>
