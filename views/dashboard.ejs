@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GenreWrapped Dashboard</title>
+    <title>Dashboard</title>
 
 
     <!-- Link to the external CSS file -->
@@ -90,30 +90,415 @@
                                 </ul>
                             </div>
 
-                            <!-- Search Section -->
-                            <div class="col-md-12">
-                                <h4>Search</h4>
-                                <div class="search-container">
-                                    <select class="form-control" id="search-bar"></select>
-                                </div>
-                                <select id="search-type">
-                                    <option value="track">Track</option>
-                                    <option value="artist">Artist</option>
-                                    <option value="album">Album</option>
-                                    <option value="playlist">Playlist</option>
-                                    <option value="show">Show</option>
-                                    <option value="episode">Episode</option>
-                                    <option value="audiobook">Audiobook</option>
-                                </select>
-                                <button id="search-button">Search</button>
-                            </div>
-                            <div id="detailed-info" style="display: none;">
-                                <p id="detail-name">Name: </p>
-                                <p id="detail-spotify-id">Spotify ID: </p>
-                            </div>
+                            
+
                         </div>
 
+                        <!-- Search ID Section -->
+                        <div class="col-md-12 section-container">
+                            <h4>Spotify ID Search:</h4>
+                            <div class="search-container">
+                                <select class="form-control" id="search-bar"></select>
+                            </div>
+                            <select id="search-type">
+                                <option value="track">Track</option>
+                                <option value="artist">Artist</option>
+                                <option value="album">Album</option>
+                                <option value="playlist">Playlist</option>
+                                <option value="show">Show</option>
+                                <option value="episode">Episode</option>
+                                <option value="audiobook">Audiobook</option>
+                            </select>
+                            <button id="search-button">Search</button>
+                        </div>
+                        <div id="detailed-info" style="display: none;">
+                            <p id="detail-name">Name: </p>
+                            <p id="detail-spotify-id">Spotify ID: </p>
+                        </div>
+                        <!-- Custom Recommendations Section -->
+                        <div class="col-md-12 section-container">
+                            <h4>Custom Recommendations</h4>
+                            <!-- The Controls for Endpoint Parameters -->
+                            <div class="custom-recommendations-container">
+                                <label for="playlist-size">Playlist Size:</label>
+                                <input type="number" id="playlist-size" min="1" max="50" value="10">
 
+                                <label for="market">Market:</label>
+                                <input type="text" id="market" placeholder="e.g., US">
+
+                                <label for="seed-genres">Seed Genres (comma-separated):</label>
+                                <input type="text" id="seed-genres">
+
+                                <!-- Seed Tracks -->
+                                <label for="seed-tracks">Seed Tracks (comma-separated):</label>
+                                <input type="text" id="seed-tracks">
+
+                                <!-- Collapsible section for Acousticness -->
+                                <div class="parameter-section">
+                                    <button class="section-header"
+                                        onclick="toggleSection('acousticness')">Acousticness</button>
+                                    <div class="section-content" id="acousticness-section">
+                                        <!-- Acousticness controls -->
+                                        <div>
+                                            <label for="acousticness-min">Min Acousticness:</label>
+                                            <input type="range" id="acousticness-min" name="acousticness-min" min="0"
+                                                max="1" step="0.01" oninput="updateAcousticness()">
+                                            <span id="acousticness-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="acousticness-max">Max Acousticness:</label>
+                                            <input type="range" id="acousticness-max" name="acousticness-max" min="0"
+                                                max="1" step="0.01" oninput="updateAcousticness()">
+                                            <span id="acousticness-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="acousticness-target">Target Acousticness:</label>
+                                            <input type="number" id="acousticness-target" name="acousticness-target"
+                                                min="0" max="1" step="0.01" oninput="updateAcousticness()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Danceability -->
+                                <div class="parameter-section">
+                                    <button class="section-header"
+                                        onclick="toggleSection('danceability')">Danceability</button>
+                                    <div class="section-content" id="danceability-section">
+                                        <!-- Danceability controls -->
+                                        <div>
+                                            <label for="danceability-min">Min Danceability:</label>
+                                            <input type="range" id="danceability-min" name="danceability-min" min="0"
+                                                max="1" step="0.01" oninput="updateDanceability()">
+                                            <span id="danceability-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="danceability-max">Max Danceability:</label>
+                                            <input type="range" id="danceability-max" name="danceability-max" min="0"
+                                                max="1" step="0.01" oninput="updateDanceability()">
+                                            <span id="danceability-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="danceability-target">Target Danceability:</label>
+                                            <input type="number" id="danceability-target" name="danceability-target"
+                                                min="0" max="1" step="0.01" oninput="updateDanceability()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Duration Ms -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('duration-ms')">Duration
+                                        Ms</button>
+                                    <div class="section-content" id="duration-ms-section">
+                                        <!-- Duration Ms controls -->
+                                        <div>
+                                            <label for="duration-ms-min">Min Duration Ms:</label>
+                                            <input type="range" id="duration-ms-min" name="duration-ms-min" min="0"
+                                                max="600000" step="1000" oninput="updateDurationMs()">
+                                            <span id="duration-ms-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="duration-ms-max">Max Duration Ms:</label>
+                                            <input type="range" id="duration-ms-max" name="duration-ms-max" min="0"
+                                                max="600000" step="1000" oninput="updateDurationMs()">
+                                            <span id="duration-ms-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="duration-ms-target">Target Duration Ms:</label>
+                                            <input type="number" id="duration-ms-target" name="duration-ms-target"
+                                                min="0" max="600000" step="1000" oninput="updateDurationMs()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Energy -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('energy')">Energy</button>
+                                    <div class="section-content" id="energy-section">
+                                        <!-- Energy controls -->
+                                        <div>
+                                            <label for="energy-min">Min Energy:</label>
+                                            <input type="range" id="energy-min" name="energy-min" min="0" max="1"
+                                                step="0.01" oninput="updateEnergy()">
+                                            <span id="energy-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="energy-max">Max Energy:</label>
+                                            <input type="range" id="energy-max" name="energy-max" min="0" max="1"
+                                                step="0.01" oninput="updateEnergy()">
+                                            <span id="energy-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="energy-target">Target Energy:</label>
+                                            <input type="number" id="energy-target" name="energy-target" min="0" max="1"
+                                                step="0.01" oninput="updateEnergy()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Instrumentalness -->
+                                <div class="parameter-section">
+                                    <button class="section-header"
+                                        onclick="toggleSection('instrumentalness')">Instrumentalness</button>
+                                    <div class="section-content" id="instrumentalness-section">
+                                        <!-- Instrumentalness controls -->
+                                        <div>
+                                            <label for="instrumentalness-min">Min Instrumentalness:</label>
+                                            <input type="range" id="instrumentalness-min" name="instrumentalness-min"
+                                                min="0" max="1" step="0.01" oninput="updateInstrumentalness()">
+                                            <span id="instrumentalness-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="instrumentalness-max">Max Instrumentalness:</label>
+                                            <input type="range" id="instrumentalness-max" name="instrumentalness-max"
+                                                min="0" max="1" step="0.01" oninput="updateInstrumentalness()">
+                                            <span id="instrumentalness-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="instrumentalness-target">Target Instrumentalness:</label>
+                                            <input type="number" id="instrumentalness-target"
+                                                name="instrumentalness-target" min="0" max="1" step="0.01"
+                                                oninput="updateInstrumentalness()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Key -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('key')">Key</button>
+                                    <div class="section-content" id="key-section">
+                                        <!-- Key controls -->
+                                        <div>
+                                            <label for="key-min">Min Key:</label>
+                                            <input type="range" id="key-min" name="key-min" min="0" max="11" step="1"
+                                                oninput="updateKey()">
+                                            <span id="key-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="key-max">Max Key:</label>
+                                            <input type="range" id="key-max" name="key-max" min="0" max="11" step="1"
+                                                oninput="updateKey()">
+                                            <span id="key-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="key-target">Target Key:</label>
+                                            <input type="number" id="key-target" name="key-target" min="0" max="11"
+                                                step="1" oninput="updateKey()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Liveness -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('liveness')">Liveness</button>
+                                    <div class="section-content" id="liveness-section">
+                                        <!-- Liveness controls -->
+                                        <div>
+                                            <label for="liveness-min">Min Liveness:</label>
+                                            <input type="range" id="liveness-min" name="liveness-min" min="0" max="1"
+                                                step="0.01" oninput="updateLiveness()">
+                                            <span id="liveness-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="liveness-max">Max Liveness:</label>
+                                            <input type="range" id="liveness-max" name="liveness-max" min="0" max="1"
+                                                step="0.01" oninput="updateLiveness()">
+                                            <span id="liveness-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="liveness-target">Target Liveness:</label>
+                                            <input type="number" id="liveness-target" name="liveness-target" min="0"
+                                                max="1" step="0.01" oninput="updateLiveness()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Loudness -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('loudness')">Loudness</button>
+                                    <div class="section-content" id="loudness-section">
+                                        <!-- Loudness controls -->
+                                        <div>
+                                            <label for="loudness-min">Min Loudness:</label>
+                                            <input type="range" id="loudness-min" name="loudness-min" min="-60" max="0"
+                                                step="1" oninput="updateLoudness()">
+                                            <span id="loudness-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="loudness-max">Max Loudness:</label>
+                                            <input type="range" id="loudness-max" name="loudness-max" min="-60" max="0"
+                                                step="1" oninput="updateLoudness()">
+                                            <span id="loudness-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="loudness-target">Target Loudness:</label>
+                                            <input type="number" id="loudness-target" name="loudness-target" min="-60"
+                                                max="0" step="1" oninput="updateLoudness()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Mode -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('mode')">Mode</button>
+                                    <div class="section-content" id="mode-section">
+                                        <!-- Mode controls -->
+                                        <div>
+                                            <label for="mode-min">Min Mode:</label>
+                                            <input type="range" id="mode-min" name="mode-min" min="0" max="1" step="1"
+                                                oninput="updateMode()">
+                                            <span id="mode-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="mode-max">Max Mode:</label>
+                                            <input type="range" id="mode-max" name="mode-max" min="0" max="1" step="1"
+                                                oninput="updateMode()">
+                                            <span id="mode-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="mode-target">Target Mode:</label>
+                                            <input type="number" id="mode-target" name="mode-target" min="0" max="1"
+                                                step="1" oninput="updateMode()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Popularity -->
+                                <div class="parameter-section">
+                                    <button class="section-header"
+                                        onclick="toggleSection('popularity')">Popularity</button>
+                                    <div class="section-content" id="popularity-section">
+                                        <!-- Popularity controls -->
+                                        <div>
+                                            <label for="popularity-min">Min Popularity:</label>
+                                            <input type="range" id="popularity-min" name="popularity-min" min="0"
+                                                max="100" step="1" oninput="updatePopularity()">
+                                            <span id="popularity-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="popularity-max">Max Popularity:</label>
+                                            <input type="range" id="popularity-max" name="popularity-max" min="0"
+                                                max="100" step="1" oninput="updatePopularity()">
+                                            <span id="popularity-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="popularity-target">Target Popularity:</label>
+                                            <input type="number" id="popularity-target" name="popularity-target" min="0"
+                                                max="100" step="1" oninput="updatePopularity()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Speechiness -->
+                                <div class="parameter-section">
+                                    <button class="section-header"
+                                        onclick="toggleSection('speechiness')">Speechiness</button>
+                                    <div class="section-content" id="speechiness-section">
+                                        <!-- Speechiness controls -->
+                                        <div>
+                                            <label for="speechiness-min">Min Speechiness:</label>
+                                            <input type="range" id="speechiness-min" name="speechiness-min" min="0"
+                                                max="1" step="0.01" oninput="updateSpeechiness()">
+                                            <span id="speechiness-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="speechiness-max">Max Speechiness:</label>
+                                            <input type="range" id="speechiness-max" name="speechiness-max" min="0"
+                                                max="1" step="0.01" oninput="updateSpeechiness()">
+                                            <span id="speechiness-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="speechiness-target">Target Speechiness:</label>
+                                            <input type="number" id="speechiness-target" name="speechiness-target"
+                                                min="0" max="1" step="0.01" oninput="updateSpeechiness()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Tempo -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('tempo')">Tempo</button>
+                                    <div class="section-content" id="tempo-section">
+                                        <!-- Tempo controls -->
+                                        <div>
+                                            <label for="tempo-min">Min Tempo:</label>
+                                            <input type="range" id="tempo-min" name="tempo-min" min="0" max="300"
+                                                step="1" oninput="updateTempo()">
+                                            <span id="tempo-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="tempo-max">Max Tempo:</label>
+                                            <input type="range" id="tempo-max" name="tempo-max" min="0" max="300"
+                                                step="1" oninput="updateTempo()">
+                                            <span id="tempo-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="tempo-target">Target Tempo:</label>
+                                            <input type="number" id="tempo-target" name="tempo-target" min="0" max="300"
+                                                step="1" oninput="updateTempo()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Time Signature -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('time-signature')">Time
+                                        Signature</button>
+                                    <div class="section-content" id="time-signature-section">
+                                        <!-- Time Signature controls -->
+                                        <div>
+                                            <label for="time-signature-min">Min Time Signature:</label>
+                                            <input type="range" id="time-signature-min" name="time-signature-min"
+                                                min="0" max="12" step="1" oninput="updateTimeSignature()">
+                                            <span id="time-signature-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="time-signature-max">Max Time Signature:</label>
+                                            <input type="range" id="time-signature-max" name="time-signature-max"
+                                                min="0" max="12" step="1" oninput="updateTimeSignature()">
+                                            <span id="time-signature-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="time-signature-target">Target Time Signature:</label>
+                                            <input type="number" id="time-signature-target" name="time-signature-target"
+                                                min="0" max="12" step="1" oninput="updateTimeSignature()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible section for Valence -->
+                                <div class="parameter-section">
+                                    <button class="section-header" onclick="toggleSection('valence')">Valence</button>
+                                    <div class="section-content" id="valence-section">
+                                        <!-- Valence controls -->
+                                        <div>
+                                            <label for="valence-min">Min Valence:</label>
+                                            <input type="range" id="valence-min" name="valence-min" min="0" max="1"
+                                                step="0.01" oninput="updateValence()">
+                                            <span id="valence-min-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="valence-max">Max Valence:</label>
+                                            <input type="range" id="valence-max" name="valence-max" min="0" max="1"
+                                                step="0.01" oninput="updateValence()">
+                                            <span id="valence-max-value"></span>
+                                        </div>
+                                        <div>
+                                            <label for="valence-target">Target Valence:</label>
+                                            <input type="number" id="valence-target" name="valence-target" min="0"
+                                                max="1" step="0.01" oninput="updateValence()">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <button id="get-recommendations-button">Get Recommendations</button>
+                            </div>
+                            <div id="recommendations-results">
+                                <!-- Recommendations will be displayed here -->
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -167,6 +552,183 @@
     <script src="/search.js"></script>
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <!-- Script for range sliders -->
+    <script>
+        // Function to update Acousticness
+        // Update functions for each parameter
+
+        function updateAcousticness() {
+            const minAcousticness = document.getElementById('acousticness-min').value;
+            const maxAcousticness = document.getElementById('acousticness-max').value;
+
+            document.getElementById('acousticness-min-value').textContent = minAcousticness;
+            document.getElementById('acousticness-max-value').textContent = maxAcousticness;
+
+            // Do whatever you need to do with the values
+        }
+
+
+
+        function updateDanceability() {
+            const minDanceability = document.getElementById('danceability-min').value;
+            const maxDanceability = document.getElementById('danceability-max').value;
+
+            document.getElementById('danceability-min-value').textContent = minDanceability;
+            document.getElementById('danceability-max-value').textContent = maxDanceability;
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateDurationMs() {
+            const minDurationMs = document.getElementById('duration-ms-min').value;
+            const maxDurationMs = document.getElementById('duration-ms-max').value;
+
+
+            document.getElementById('duration-ms-min-value').textContent = minDurationMs;
+            document.getElementById('duration-ms-max-value').textContent = maxDurationMs;
+
+
+
+            // Do whatever you need to do with the values
+        }
+
+        // Continue with the rest of the update functions for each parameter (energy through valence)
+        // ...
+
+        function updateEnergy() {
+            const minEnergy = document.getElementById('energy-min').value;
+            const maxEnergy = document.getElementById('energy-max').value;
+
+
+            document.getElementById('energy-min-value').textContent = minEnergy;
+            document.getElementById('energy-max-value').textContent = maxEnergy;
+
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateInstrumentalness() {
+            const minInstrumentalness = document.getElementById('instrumentalness-min').value;
+            const maxInstrumentalness = document.getElementById('instrumentalness-max').value;
+
+            document.getElementById('instrumentalness-min-value').textContent = minInstrumentalness;
+            document.getElementById('instrumentalness-max-value').textContent = maxInstrumentalness;
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateKey() {
+            const minKey = document.getElementById('key-min').value;
+            const maxKey = document.getElementById('key-max').value;
+
+            document.getElementById('key-min-value').textContent = minKey;
+            document.getElementById('key-max-value').textContent = maxKey;
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateLiveness() {
+            const minLiveness = document.getElementById('liveness-min').value;
+            const maxLiveness = document.getElementById('liveness-max').value;
+
+            document.getElementById('liveness-min-value').textContent = minLiveness;
+            document.getElementById('liveness-max-value').textContent = maxLiveness;
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateLoudness() {
+            const minLoudness = document.getElementById('loudness-min').value;
+            const maxLoudness = document.getElementById('loudness-max').value;
+
+            document.getElementById('loudness-min-value').textContent = minLoudness;
+            document.getElementById('loudness-max-value').textContent = maxLoudness;
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateMode() {
+            const minMode = document.getElementById('mode-min').value;
+            const maxMode = document.getElementById('mode-max').value;
+
+            document.getElementById('mode-min-value').textContent = minMode;
+            document.getElementById('mode-max-value').textContent = maxMode;
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updatePopularity() {
+            const minPopularity = document.getElementById('popularity-min').value;
+            const maxPopularity = document.getElementById('popularity-max').value;
+
+            document.getElementById('popularity-min-value').textContent = minPopularity;
+            document.getElementById('popularity-max-value').textContent = maxPopularity;
+
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateSpeechiness() {
+            const minSpeechiness = document.getElementById('speechiness-min').value;
+            const maxSpeechiness = document.getElementById('speechiness-max').value;
+
+            document.getElementById('speechiness-min-value').textContent = minSpeechiness;
+            document.getElementById('speechiness-max-value').textContent = maxSpeechiness;
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateTempo() {
+            const minTempo = document.getElementById('tempo-min').value;
+            const maxTempo = document.getElementById('tempo-max').value;
+
+            document.getElementById('tempo-min-value').textContent = minTempo;
+            document.getElementById('tempo-max-value').textContent = maxTempo;
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateTimeSignature() {
+            const minTimeSignature = document.getElementById('time-signature-min').value;
+            const maxTimeSignature = document.getElementById('time-signature-max').value;
+
+            document.getElementById('time-signature-min-value').textContent = minTimeSignature;
+            document.getElementById('time-signature-max-value').textContent = maxTimeSignature;
+
+
+            // Do whatever you need to do with the values
+        }
+
+        function updateValence() {
+            const minValence = document.getElementById('valence-min').value;
+            const maxValence = document.getElementById('valence-max').value;
+
+            document.getElementById('valence-min-value').textContent = minValence;
+            document.getElementById('valence-max-value').textContent = maxValence;
+
+
+            // Do whatever you need to do with the values
+        }
+
+
+
+    </script>
+    <!-- Script for collapsible sections -->
+    <script>
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId + '-section');
+            section.classList.toggle('active');
+        }
+    </script>
+
 </body>
 
 </html>

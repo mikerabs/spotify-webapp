@@ -2,14 +2,50 @@
 
 /* Style for the album covers */
 .track-img {
-    max-width: 50px; /* Adjust this value as needed */
-    max-height: 50px; /* Adjust this value as needed */
-    margin-right: 10px; /* Add some space between the image and text */
+    max-width: 50px;
+    /* Adjust this value as needed */
+    max-height: 50px;
+    /* Adjust this value as needed */
+    margin-right: 10px;
+    /* Add some space between the image and text */
 }
 
 /* Style for the artist images */
 .artist-img {
-    max-width: 50px; /* Adjust this value as needed */
-    max-height: 50px; /* Adjust this value as needed */
-    margin-right: 10px; /* Add some space between the image and text */
+    max-width: 50px;
+    /* Adjust this value as needed */
+    max-height: 50px;
+    /* Adjust this value as needed */
+    margin-right: 10px;
+    /* Add some space between the image and text */
+}
+
+.parameter-section {
+    margin-bottom: 10px;
+}
+
+.section-header {
+    background-color: #f1f1f1;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    text-align: left;
+    outline: none;
+    width: 100%;
+}
+
+.section-content {
+    display: none;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.active {
+    display: block;
+}
+
+/* Add space between sections */
+.section-container {
+    margin-bottom: 40px;
+    /* Adjust the value as needed to control the vertical space */
 }

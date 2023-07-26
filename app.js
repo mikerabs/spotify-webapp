@@ -135,6 +135,152 @@ app.get('/search', async (req, res) => {
     }
 });
 
+// Custom Recommendations route
+// app.get('/custom-recommendations', async (req, res) => {
+//     const playlistSize = req.query.playlistSize;
+//     const market = req.query.market;
+//     const seedGenres = req.query.seedGenres.split(',');
+
+//     try {
+//         // Use the spotifyApi object to get custom recommendations based on the user's input
+//         const response = await spotifyApi.getRecommendations({
+//             limit: playlistSize,
+//             market: market,
+//             seed_genres: seedGenres,
+//             // Add other optional parameters here if needed
+//         });
+
+//         // Send the recommendations data back to the client
+//         res.json(response.body.tracks);
+//     } catch (error) {
+//         console.error('Error fetching custom recommendations:', error);
+//         res.status(500).json({ error: 'Error fetching custom recommendations' });
+//     }
+// });
+app.post('/custom-recommendations', async (req, res) => {
+    try {
+        const {
+            limit,
+            market,
+            seed_artists,
+            seed_genres,
+            seed_tracks,
+            acousticness_min,
+            acousticness_max,
+            acousticness_target,
+            danceability_min,
+            danceability_max,
+            danceability_target,
+            duration_ms_min,
+            duration_ms_max,
+            duration_ms_target,
+            energy_min,
+            energy_max,
+            energy_target,
+            instrumentalness_min,
+            instrumentalness_max,
+            instrumentalness_target,
+            key_min,
+            key_max,
+            key_target,
+            liveness_min,
+            liveness_max,
+            liveness_target,
+            loudness_min,
+            loudness_max,
+            loudness_target,
+            mode_min,
+            mode_max,
+            mode_target,
+            popularity_min,
+            popularity_max,
+            popularity_target,
+            speechiness_min,
+            speechiness_max,
+            speechiness_target,
+            tempo_min,
+            tempo_max,
+            tempo_target,
+            time_signature_min,
+            time_signature_max,
+            time_signature_target,
+            valence_min,
+            valence_max,
+            valence_target,
+        } = req.body;
+
+        // Set the access token for the Spotify Web API object (you need to obtain the token through the Spotify authorization process)
+        spotifyApi.setAccessToken(req.session.access_token);
+
+        // Create the parameters object for the recommendations request
+        const params = {
+            limit,
+            market,
+            seed_artists,
+            seed_genres,
+            seed_tracks,
+            min_acousticness: acousticness_min,
+            max_acousticness: acousticness_max,
+            target_acousticness: acousticness_target,
+            min_danceability: danceability_min,
+            max_danceability: danceability_max,
+            target_danceability: danceability_target,
+            min_duration_ms: duration_ms_min,
+            max_duration_ms: duration_ms_max,
+            target_duration_ms: duration_ms_target,
+            min_energy: energy_min,
+            max_energy: energy_max,
+            target_energy: energy_target,
+            min_instrumentalness: instrumentalness_min,
+            max_instrumentalness: instrumentalness_max,
+            target_instrumentalness: instrumentalness_target,
+            min_key: key_min,
+            max_key: key_max,
+            target_key: key_target,
+            min_liveness: liveness_min,
+            max_liveness: liveness_max,
+            target_liveness: liveness_target,
+            min_loudness: loudness_min,
+            max_loudness: loudness_max,
+            target_loudness: loudness_target,
+            min_mode: mode_min,
+            max_mode: mode_max,
+            target_mode: mode_target,
+            min_popularity: popularity_min,
+            max_popularity: popularity_max,
+            target_popularity: popularity_target,
+            min_speechiness: speechiness_min,
+            max_speechiness: speechiness_max,
+            target_speechiness: speechiness_target,
+            min_tempo: tempo_min,
+            max_tempo: tempo_max,
+            target_tempo: tempo_target,
+            min_time_signature: time_signature_min,
+            max_time_signature: time_signature_max,
+            target_time_signature: time_signature_target,
+            min_valence: valence_min,
+            max_valence: valence_max,
+            target_valence: valence_target,
+        };
+
+        // Call the Spotify API to get custom recommendations
+        const { body } = await spotifyApi.getRecommendations(params);
+
+        // Extract the necessary information (name and artists) from the recommendations
+        const customRecommendations = body.tracks.map((track) => ({
+            name: track.name,
+            artists: track.artists.map((artist) => artist.name),
+        }));
+
+        // Send the custom recommendations back to the client
+        res.status(200).json(customRecommendations);
+    } catch (error) {
+        console.error('Error fetching custom recommendations:', error);
+        res.status(500).json({ error: 'Error fetching custom recommendations' });
+    }
+});
+
+  
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
